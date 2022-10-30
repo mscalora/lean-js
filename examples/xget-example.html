@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xget example</title>
+  <link rel="shortcut icon" href="//static.scalora.dev/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/javascript.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/json.min.js"></script>  
+  <script src="../client-utils.js"></script>
+  <style>
+    .json-output {
+      max-height: 300px;
+      overflow: auto;
+    }
+    .actions {
+      display: grid;
+      place-items: center;
+    }
+    .actions button {
+      background: rgb(128, 114, 217);
+      color: white;
+      border-radius: 4px;
+      border: 1px darkblue;
+      font-size: 18px;
+    }
+    #home-link {
+      float: right;
+      margin: 4px 10px;
+    }
+  </style> 
+</head>
+<body>
+  <a id="home-link" href="/">🏠</a>
+  <h2>xget example</h2>
+  <h3>URL</h3>
+  <pre><code id="url" class="hljs">https://api.weather.gov/points/39.7456,-97.0892</code></pre>
+  <h3>Source</h3>
+  <pre><code id="source" class="language-javascript"></code></pre>
+  <p class="actions">
+    <button type="button" onclick="run_example()">run example</button>
+  </p>
+  <h3 id="output-heading">Output</h3>
+  <pre class="json-output"><code id="output" class="highlight-json"></code></pre>
+  <script id="Simple" class="example-code">
+    function simple(url) {
+      leanjs.xget(url, 'json').then(r => r.response).then((json) => {
+        show_output(json);
+      }).catch((e) => {
+        console.error(e);
+        show_output(e.message);
+      });
+    }
+  </script>
+  <script>
+    let src = document.getElementById('source'),
+        output = document.getElementById('output'),
+        outputHeading = document.getElementById('output-heading'),
+        examples = document.querySelectorAll('.example-code'),
+        example = examples.item(0),
+        exampleName = example.id,
+        js = example.innerHTML;
+    src.innerHTML = js;
+    hljs.highlightElement(src);
+    function run_example(evt) {
+      output.innerHTML = '';
+      setTimeout(() => {
+        let urlEl = document.getElementById('url'),
+        url = urlEl.innerText;
+        window[exampleName.toLowerCase()](url);
+        output.className = '';
+        hljs.highlightElement(output);
+
+      }, 200);
+    }
+    function show_output(obj) {
+      output.innerHTML = JSON.stringify(obj, null, 2);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>get example</title>
+  <link rel="shortcut icon" href="//static.scalora.dev/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/javascript.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/json.min.js"></script>  
+  <script src="../client-utils.js"></script>
+  <style>
+    .example-output {
+      max-height: 300px;
+      overflow: auto;
+    }
+    .actions {
+      display: grid;
+      place-items: center;
+    }
+    .actions button {
+      background: rgb(128, 114, 217);
+      color: white;
+      border-radius: 4px;
+      border: 1px darkblue;
+      font-size: 18px;
+    }
+  </style> 
+</head>
+<body>
+  <h2>get example</h2>
+  <h3>URL</h3>
+  <pre><code id="url">https://api.weather.gov/points/39.7456,-97.0892</code></pre>
+  <h3>Source</h3>
+  <pre><code id="source" class="language-javascript"></code></pre>
+  <p class="actions">
+    <button type="button" onclick="run_example()">run example</button>
+  </p>
+  <h3>Output</h3>
+  <pre class="example-output"><code id="output" class="highlight-json"></code></pre>
+  <script id="example-code">
+    function example() {
+      let example_data = {
+        name: 'Bob',
+        list: ['zero', 'one', 'two', 'three', 'four'],
+        topItems: [
+          {name: 'Item 1', value: 58},
+          {name: 'Item Two', value: 81},
+          {name: 'Item III', value: 97},
+        ]
+      };
+      let v1 = leanjs.get(example_data, 'name');
+      let v2 = leanjs.get(example_data, 'list.7', 'missing');
+      let v3 = leanjs.get(example_data, 'topItems.2.value');
+      let out = document.getElementById('output');
+      show_output({
+        v1: v1,
+        v2: v2,
+        v3: v3,
+      });
+    }
+  </script>
+  <script>
+    let src = document.getElementById('source'),
+        output = document.getElementById('output'),
+        code = document.getElementById('example-code'),
+        js = code.innerHTML;
+    src.innerHTML = js;
+    hljs.highlightElement(src);
+    function run_example(evt) {
+      output.innerHTML = '';
+      setTimeout(() => {
+        example();
+        output.className = '';
+        hljs.highlightElement(output);
+      }, 200);
+    }
+    function show_output(obj) {
+      output.innerHTML = JSON.stringify(obj, null, 2);
+    }
+  </script>
+</body>
+</html>
