@@ -11,47 +11,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/javascript.min.js"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/json.min.js"></script>  
   <script src="../client-utils.js"></script>
-  <style>
-    .example-output {
-      max-height: 300px;
-      overflow: auto;
-    }
-    .actions {
-      display: grid;
-      place-items: center;
-    }
-    .actions button {
-      background: rgb(128, 114, 217);
-      color: white;
-      border-radius: 4px;
-      border: 1px darkblue;
-      font-size: 18px;
-    }
-    #message {
-      font-size: 128px;
-      text-align: center;
-      padding: 10px;
-      color: black;
-    }
-    #message.tik {
-      animation: tik 1s;
-    }
-    #message.tok {
-      animation: tok 1s;
-    }
-    @keyframes tik {
-      0% { color: black; }
-      20% { color: red; }
-      100% { color: black; }
-    }
-    @keyframes tok {
-      0% { color: black; }
-      20% { color: blue; }
-      100% { color: black; }
-    }
-  </style> 
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="sync.css">
 </head>
 <body>
+  <a id="home-link" href="/">🏠</a>
   <h2>sync timer example</h2>
   <h3>Interval</h3>
   <p>
@@ -60,19 +24,27 @@
   <h3>Source</h3>
   <pre><code id="source" class="language-javascript"></code></pre>
   <p class="actions">
-    <button type="button" onclick="run_example()">run example</button>
+    <span>
+      <button id="start" type="button" onclick="start_example(this);">start</button>
+      <button id="stop" type="button" onclick="stop_example(this);" disabled>stop</button>
+    </span>
   </p>
-  <h3>Output</h3>
-  <pre class="example-output"><code id="message" class="hljs"></code></pre>
+  <h3>Message</h3>
+  <pre class="example-output"><code id="message" class=""></code></pre>
+  <h3>Callback Parameter</h3>
   <pre class="example-output"><code id="output" class="highlight-json"></code></pre>
   <script id="example-code">
-    function example(interval) {
-      let tikTok = true,
-          timer = leanjs.setSyncInterval((state) => {
-            show_message(tikTok ? 'TIK' : 'TOK');
-            show_output(state);
-            tikTok = !tikTok;
-          }, interval);
+    let timer;
+
+    function start(interval) {
+      timer = leanjs.setSyncInterval((state) => {
+        show_message(state.count & 1 ? 'TIK' : 'TOK');
+        show_output(state);
+      }, interval);
+    }
+
+    function stop() {
+      leanjs.clearSyncInterval(timer);
     }
   </script>
   <script>
@@ -83,11 +55,33 @@
         js = code.innerHTML;
     src.innerHTML = js;
     hljs.highlightElement(src);
-    let timer = null;
-    function run_example(evt) {
+
+    function start_example(el) {
       let range = document.getElementById('interval'),
+          message = document.getElementById('message'),
+          startBut = document.getElementById('start'),
+          stopBut = document.getElementById('stop'),
           interval = range.valueAsNumber;
-      example(interval);
+
+      message.classList.add('hljs');
+      startBut.disabled = true;
+      stopBut.disabled = false;
+
+      message.style.animationDuration = `${interval*0.9}ms`;
+      start(interval);
+    }
+    function stop_example(el) {
+      let startBut = document.getElementById('start'),
+      stopBut = document.getElementById('stop');
+
+      message.classList.remove('hljs', 'tik', 'tok');
+      message.innerHTML = '';
+      output.innerHTML = '';
+
+      startBut.disabled = false;
+      stopBut.disabled = true;
+
+      stop();
     }
     function show_message(msg) {
       message.innerText = msg;

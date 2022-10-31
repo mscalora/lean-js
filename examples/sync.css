@@ -1,0 +1,27 @@
+
+#message {
+  color: black;
+}
+#message.tik {
+  font-size: 110px;
+  text-align: center;
+  padding: 10px;
+  animation: tik ease-in-out 1s;
+}
+#message.tok {
+  font-size: 110px;
+  text-align: center;
+  padding: 10px;
+  animation: tok ease-in-out 1s;
+}
+@keyframes tik {
+  0% { color: black; }
+  5% { color: red; }
+  100% { color: black; }
+}
+@keyframes tok {
+  0% { color: black; }
+  5% { color: blue; }
+  100% { color: black; }
+}
+

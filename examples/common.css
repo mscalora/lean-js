@@ -1,0 +1,49 @@
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+  background: rgb(227, 242, 255);
+}
+body {
+  margin: 10px auto;
+  max-width: 600px;
+}
+.hljs {
+  border: 1px solid #ccf;
+}
+.example-output {
+  max-height: 300px;
+  overflow: auto;
+}
+.actions {
+  display: grid;
+  place-items: center;
+}
+.actions button {
+  background: rgb(128, 114, 217);
+  color: white;
+  border-radius: 4px;
+  border: 1px darkblue;
+  font-size: 18px;
+}
+.actions button:hover,
+.actions button:active {
+  background: blue;
+}
+.actions button:disabled {
+  background: rgb(56, 56, 120);
+  color: gray;
+}
+
+#home-link {
+  float: right;
+  margin: 4px 10px;
+}
+
+
+.examples-list {
+  list-style: none;
+}
+.examples-list > * {
+  display: block;
+  margin-bottom: 6px;
+}

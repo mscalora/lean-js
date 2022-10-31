@@ -41,8 +41,11 @@
       let now = Date.now(),
           target = now + 10 + interval - (now+10) % interval;
       state.timer = setTimeout(() => {
-        callback({id: state.id, count: state.count++, interval: interval, target: target});
-        schedule();
+        try {
+          callback({id: state.id, count: state.count++, interval: interval, target: target});
+        } finally {
+          schedule();
+        }
       }, target - Date.now());
     }
     if (window.SYNC_INTERVAL_TIMERS[state.id]) {
